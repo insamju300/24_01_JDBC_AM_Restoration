@@ -1,32 +1,28 @@
 ################################################
-################################################
 DROP DATABASE IF EXISTS `JDBC_AM`;
 CREATE DATABASE `JDBC_AM`;
 USE `JDBC_AM`;
-
-CREATE TABLE `member`(
-    id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    regDate DATETIME NOT NULL,
-    updateDate DATETIME NOT NULL,
-    loginId CHAR(30) NOT NULL UNIQUE,
-    loginPw CHAR(200) NOT NULL,
-    `name` CHAR(100) NOT NULL
-);
-
 
 CREATE TABLE article(
     id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     regDate DATETIME NOT NULL,
     updateDate DATETIME NOT NULL,
     title CHAR(100) NOT NULL,
-     writerId INT(10) UNSIGNED NOT NULL,
-    `body` TEXT NOT NULL,
-     FOREIGN KEY (`writerId`) REFERENCES `member` (`id`)
+    `body` TEXT NOT NULL
 );
 
-CREATE UNIQUE INDEX `loginIdIndex` ON `member` (`loginId`);
+CREATE TABLE `member`(
+    id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    regDate DATETIME NOT NULL,
+    updateDate DATETIME NOT NULL,
+    loginId CHAR(30) NOT NULL,
+    loginPw CHAR(200) NOT NULL,
+    `name` CHAR(100) NOT NULL
+);
 
+ALTER TABLE `member` ADD INDEX(`loginId`);
 
+ALTER TABLE article ADD COLUMN memberId INT(10) UNSIGNED NOT NULL AFTER updateDate;
 
 INSERT INTO `member`
 SET regDate = NOW(),
@@ -45,16 +41,23 @@ loginPw = 'test2',
 INSERT INTO article
 SET regDate = NOW(),
 updateDate = NOW(),
-title = CONCAT('제목', RAND()),
-`body` = CONCAT('내용', RAND()),
-writerId = 1;
+memberId = 1,
+title = '제목1',
+`body` = '내용1';
 
 INSERT INTO article
 SET regDate = NOW(),
 updateDate = NOW(),
-title = CONCAT('제목', RAND()),
-`body` = CONCAT('내용', RAND()),
-writerId = 2;
+memberId = 2,
+title = '제목2',
+`body` = '내용2';
+
+INSERT INTO article
+SET regDate = NOW(),
+updateDate = NOW(),
+memberId = 1,
+title = '제목3',
+`body` = '내용3';
 
 SELECT *
 FROM `member`;
@@ -63,8 +66,12 @@ SELECT *
 FROM article
 ORDER BY id DESC;
 
-
 #############################################################
+
+
+SELECT *
+FROM `member`
+WHERE loginId = 'test1';
 
 
 UPDATE article
@@ -88,3 +95,4 @@ WHERE loginId = 'test3';
 SELECT 1 + 1;
 SELECT 1 > 1;
 
+SELECT COUNT(*) > 0 FROM `member` WHERE loginI = 'test4';

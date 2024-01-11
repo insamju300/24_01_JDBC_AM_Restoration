@@ -89,11 +89,9 @@ public class App {
 			articleController.showDetail(cmd);
 		} else if (cmd.startsWith("article delete")) {
 			articleController.doDelete(cmd);
-		} else if(cmd.equals("article mylist")) {
-			articleController.viewLoginMembersArticles();
-		}else {
+		} else {
 			System.out.println("처리할 수 없는 명령어");
-		} 
+		}
 
 		return 0;
 	}
