@@ -1,8 +1,11 @@
 package com.KoreaIT.java.JDBCAM.dao;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import com.KoreaIT.java.JDBCAM.container.Container;
+import com.KoreaIT.java.JDBCAM.dto.Article;
 import com.KoreaIT.java.JDBCAM.dto.Member;
 import com.KoreaIT.java.JDBCAM.util.DBUtil;
 import com.KoreaIT.java.JDBCAM.util.SecSql;
@@ -45,5 +48,6 @@ public class MemberDao {
 
 		return DBUtil.insert(Container.conn, sql);
 	}
+	
 
 }
