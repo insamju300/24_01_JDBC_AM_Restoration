@@ -71,7 +71,9 @@ public class App {
 		MemberController memberController = Container.memberController;
 		ArticleController articleController = Container.articleController;
 
-		if (cmd.equals("member profile")) {
+		if (cmd.equals("member logout")) {
+			memberController.logout();
+		} else if (cmd.equals("member profile")) {
 			memberController.showProfile();
 		} else if (cmd.equals("member login")) {
 			memberController.login();
@@ -87,9 +89,11 @@ public class App {
 			articleController.showDetail(cmd);
 		} else if (cmd.startsWith("article delete")) {
 			articleController.doDelete(cmd);
-		} else {
+		} else if(cmd.equals("article mylist")) {
+			articleController.viewLoginMembersArticles();
+		}else {
 			System.out.println("처리할 수 없는 명령어");
-		}
+		} 
 
 		return 0;
 	}

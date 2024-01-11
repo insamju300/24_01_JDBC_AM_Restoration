@@ -35,4 +35,9 @@ public class ArticleService {
 		return articleDao.getArticles();
 	}
 
+	public List<Article> searchArticles(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return articleDao.searchArticles(map);
+	}
+
 }

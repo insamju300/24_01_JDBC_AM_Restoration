@@ -1,5 +1,6 @@
 package com.KoreaIT.java.JDBCAM.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +18,10 @@ public class ArticleController {
 	}
 
 	public void doWrite() {
+		if (Container.session.isLogined() == false) {
+			System.out.println("로그인 후 이용해줘");
+			return;
+		}
 		System.out.println("==글쓰기==");
 		System.out.print("제목 : ");
 		String title = Container.sc.nextLine();
@@ -39,14 +44,17 @@ public class ArticleController {
 			return;
 		}
 
-		System.out.println("  번호  /   제목  ");
+		System.out.println("  번호  /   제목  / 작성자명");
 		for (Article article : articles) {
-			System.out.printf("  %d     /   %s   \n", article.getId(), article.getTitle());
+			System.out.printf("  %d     /   %s   /  %s  \n", article.getId(), article.getTitle(), article.getWriterName());
 		}
 	}
 
 	public void doModify(String cmd) {
-
+		if (Container.session.isLogined() == false) {
+			System.out.println("로그인 후 이용해줘");
+			return;
+		}
 		int id = 0;
 
 		try {
@@ -60,6 +68,12 @@ public class ArticleController {
 
 		if (articleMap.isEmpty()) {
 			System.out.println(id + "번 글은 없습니다.");
+			return;
+		}
+		
+		Article article = new Article(articleMap);
+		if(article.getWriterId() != Container.session.loginedMemberId) {
+			System.out.println("게시글 작성자만 글 삭제가 가능합니다.");
 			return;
 		}
 
@@ -100,13 +114,17 @@ public class ArticleController {
 		System.out.println("번호 : " + article.getId());
 		System.out.println("작성날짜 : " + Util.getNowDate_TimeStr(article.getRegDate()));
 		System.out.println("수정날짜 : " + Util.getNowDate_TimeStr(article.getUpdateDate()));
+		System.out.println("작성자 : " + article.getWriterName());
 		System.out.println("제목 : " + article.getTitle());
 		System.out.println("내용 : " + article.getBody());
 
 	}
 
 	public void doDelete(String cmd) {
-
+		if (Container.session.isLogined() == false) {
+			System.out.println("로그인 후 이용해줘");
+			return;
+		}
 		int id = 0;
 
 		try {
@@ -122,10 +140,43 @@ public class ArticleController {
 			System.out.println(id + "번 글은 없습니다.");
 			return;
 		}
+		
+		Article article = new Article(articleMap);
+		
+		if(article.getWriterId() != Container.session.loginedMemberId) {
+			System.out.println("게시글 작성자만 글 수정이 가능합니다.");
+			return;
+		}
 
 		articleService.doDelete(id);
 
 		System.out.println(id + "번 글이 삭제되었습니다.");
 
 	}
+	public void viewLoginMembersArticles() {
+		if (Container.session.isLogined() == false) {
+			System.out.println("로그인 후 이용해줘");
+			return;
+		}
+		
+		System.out.println("==목록==");
+		
+
+		Map<String, Object> map = new HashMap<>(); 
+		map.put("writerId", Container.session.loginedMemberId);
+		List<Article> articles = articleService.searchArticles(map);
+
+		if (articles.size() == 0) {
+			System.out.println("게시글이 없습니다");
+			return;
+		}
+
+		System.out.println("  번호  /   제목  / 작성자명");
+		for (Article article : articles) {
+			System.out.printf("  %d     /   %s   /  %s  \n", article.getId(), article.getTitle(), article.getWriterName());
+		}
+		
+	}
+	
+	
 }

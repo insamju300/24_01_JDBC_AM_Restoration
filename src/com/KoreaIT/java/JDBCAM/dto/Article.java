@@ -10,6 +10,8 @@ public class Article {
 	private LocalDateTime updateDate;
 	private String title;
 	private String body;
+	private int writerId;
+	private String writerName;
 
 	public Article(int id, String title, String body) {
 		this.id = id;
@@ -25,12 +27,25 @@ public class Article {
 		this.body = body;
 	}
 
+	public Article(int id, LocalDateTime regDate, LocalDateTime updateDate, String title, String body, int writerId, String writerName) {
+		this.id = id;
+		this.regDate = regDate;
+		this.updateDate = updateDate;
+		this.title = title;
+		this.body = body;
+		this.writerId = writerId;
+		this.writerName = writerName;
+	}
+
+
 	public Article(Map<String, Object> articleMap) {
 		this.id = (int) articleMap.get("id");
 		this.regDate = (LocalDateTime) articleMap.get("regDate");
 		this.updateDate = (LocalDateTime) articleMap.get("updateDate");
 		this.title = (String) articleMap.get("title");
 		this.body = (String) articleMap.get("body");
+		this.writerId = (int) articleMap.get("writerId");
+		this.writerName = (String) articleMap.get("writerName");
 	}
 
 	public LocalDateTime getRegDate() {
@@ -49,11 +64,8 @@ public class Article {
 		this.updateDate = updateDate;
 	}
 
-	@Override
-	public String toString() {
-		return "Article [id=" + id + ", regDate=" + regDate + ", updateDate=" + updateDate + ", title=" + title
-				+ ", body=" + body + "]";
-	}
+
+
 
 	public int getId() {
 		return id;
@@ -77,6 +89,27 @@ public class Article {
 
 	public void setBody(String body) {
 		this.body = body;
+	}
+	public int getWriterId() {
+		return writerId;
+	}
+
+	public void setWriterId(int writerId) {
+		this.writerId = writerId;
+	}
+
+	public String getWriterName() {
+		return writerName;
+	}
+
+	public void setWriterName(String writerName) {
+		this.writerName = writerName;
+	}
+
+	@Override
+	public String toString() {
+		return "Article [id=" + id + ", regDate=" + regDate + ", updateDate=" + updateDate + ", title=" + title
+				+ ", body=" + body + ", writerId=" + writerId + ", writerName=" + writerName + "]";
 	}
 
 }
