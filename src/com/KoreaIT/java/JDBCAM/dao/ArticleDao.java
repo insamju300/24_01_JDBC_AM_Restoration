@@ -89,4 +89,22 @@ public class ArticleDao {
 		return articles;
 	}
 
+	public List<Article> getForPrintArticle(Map<String, Object> args) {
+		SecSql sql = new SecSql();
+		String searchKeyword = null;
+		if(args.containsKey("searchKeyword")) {
+			searchKeyword = (String) args.get("searchKeyword");
+		}
+		
+		int limitFrom = -1;
+		int limitTake = -1;
+		
+		if(args.containsKey("limitTake")) {
+			limitTake = (int)
+		}
+				
+		
+		return null;
+	}
+
 }

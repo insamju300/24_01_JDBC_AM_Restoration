@@ -35,10 +35,25 @@ public class ArticleController {
 
 	}
 
-	public void showList() {
+	public void showList(String cmd) {
 		System.out.println("==목록==");
 
-		List<Article> articles = articleService.getArticles();
+//		List<Article> articles = articleService.getArticles();
+		String[] cmdBits = cmd.split(" ");
+		int page = 1;
+		String searchKeyword = null;
+		if(cmdBits.length == 3) {
+			page = Integer.parseInt(cmdBits[2]);
+		}
+		
+		if(cmdBits.length == 4) {
+			searchKeyword = cmdBits[3];
+		}
+		
+		int itemsinPage = 10;
+		
+		List<Article> articles = articleService.getForPrintArticles(page, itemsinPage, searchKeyword);
+		
 
 		if (articles.size() == 0) {
 			System.out.println("게시글이 없습니다");
